@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Rishabh Fruits Admin Panel</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <script>
+    let isAuthenticated = false;
+
+    function authenticate() {
+      const password = document.getElementById('password-input').value;
+      if (password === 'rishabh123') {
+        isAuthenticated = true;
+        document.getElementById('login-box').style.display = 'none';
+        document.getElementById('admin-panel').style.display = 'block';
+      } else {
+        alert('❌ गलत पासवर्ड! कृपया फिर से प्रयास करें।');
+      }
+    }
+    function updateFruitList() {
+      const fruits = document.querySelectorAll('.fruit-item');
+      const display = document.getElementById('fruit-display');
+      display.innerHTML = '';
+
+      fruits.forEach(fruit => {
+        const name = fruit.querySelector('.name').value;
+        const price = fruit.querySelector('.price').value;
+        const image = fruit.querySelector('.image').value;
+
+        if (name && price && image) {
+          display.innerHTML += `
+            <div class="bg-white rounded-xl shadow p-4">
+              <img src="${image}" alt="${name}" class="w-full h-40 object-cover rounded">
+              <h3 class="text-lg font-bold mt-2">${name}</h3>
+              <p>₹${price}/kg</p>
+            </div>`;
+        }
+      });
+    }
+
+    function addFruit() {
+      const container = document.getElementById('fruit-form');
+      const newFruit = document.createElement('div');
+      newFruit.className = 'fruit-item grid grid-cols-1 md:grid-cols-3 gap-2 mb-4';
+      newFruit.innerHTML = `
+        <input type="text" placeholder="Fruit Name (e.g. केला)" class="name p-2 border rounded" />
+        <input type="text" placeholder="Price (e.g. 40)" class="price p-2 border rounded" />
+        <input type="text" placeholder="Image URL" class="image p-2 border rounded" />
+      `;
+      container.appendChild(newFruit);
+    }
+  </script>
+</head>
+<body class="bg-yellow-50 text-gray-800">
+  <header class="bg-green-600 text-white p-4 text-center text-2xl font-bold">
+    Admin Panel - Rishabh Fruits 🍎
+  </header>
+
+  <main class="p-4">
+    <div id="login-box" class="text-center mt-10">
+      <h2 class="text-xl font-semibold mb-2">🔒 कृपया पासवर्ड डालें</h2>
+      <input id="password-input" type="password" class="p-2 border rounded w-64" placeholder="Enter Password" />
+      <button onclick="authenticate()" class="bg-green-600 text-white px-4 py-2 rounded shadow ml-2">Login</button>
+    </div>
+    <div id="admin-panel" style="display: none;">
+      <h2 class="text-xl font-semibold mb-4">🍌 Add or Edit Fruits</h2>
+
+      <div id="fruit-form" class="mb-4">
+        <!-- यहीं पर नए फल के इनपुट्स जुड़ेंगे -->
+      </div>
+
+      <button onclick="addFruit()" class="bg-blue-600 text-white px-4 py-2 rounded shadow">
+        + Add Fruit
+      </button>
+      <button onclick="updateFruitList()" class="bg-green-600 text-white px-4 py-2 rounded shadow ml-2">
+        Update Preview
+      </button>
+
+      <h2 class="text-xl font-semibold my-4">📦 Live Preview:</h2>
+      <section id="fruit-display" class="grid grid-cols-1 md:grid-cols-3 gap-4"></section>
+    </div>  </main>
+</body>
+</html>
+
