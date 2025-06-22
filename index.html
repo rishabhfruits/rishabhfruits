@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Rishabh Fruits</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(to bottom, #fdf6e3, #ffffff);
+      padding: 20px;
+      text-align: center;
+    }
+    .tagline {
+      background: linear-gradient(to right, #fcd34d, #f87171);
+      padding: 10px;
+      font-size: 22px;
+      font-weight: bold;
+      color: white;
+      text-shadow: 2px 2px 5px #000;
+      margin-bottom: 20px;
+      animation: slideIn 3s infinite alternate;
+    }
+    @keyframes slideIn {
+      0% { transform: scale(1); }
+      100% { transform: scale(1.05); }
+    }
+    .fruit-btn {
+      font-size: 22px;
+      margin: 8px;
+      padding: 12px 20px;
+      background: #ffe;
+      border: 2px solid #dd0;
+      border-radius: 12px;
+      cursor: pointer;
+      display: inline-block;
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+      100% { transform: scale(1); }
+    }
+    .form-group { margin: 12px 0; }
+    input { padding: 8px; width: 80%; max-width: 300px; }
+    .order-btn {
+      margin-top: 16px;
+      padding: 12px 24px;
+      background: #48bb78;
+      color: white;
+      font-size: 18px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="tagline">
+    📞 Rishabh Fruits - 8435054028<br/>
+    🥭 शादी, त्योहार या रोज़ की ज़रूरत — फलों के लिए हमसे जुड़ें तुरंत!
+  </div>
+
+  <div id="fruits">
+    <div onclick="selectFruit('आम',100)" class="fruit-btn">🥭 आम</div>
+    <div onclick="selectFruit('सेब',120)" class="fruit-btn">🍎 सेब</div>
+    <div onclick="selectFruit('केला',60)" class="fruit-btn">🍌 केला</div>
+    <div onclick="selectFruit('कीवी',180)" class="fruit-btn">🥝 कीवी</div>
+    <div onclick="selectFruit('नारियल पानी',40)" class="fruit-btn">🥥 नारियल पानी</div>
+    <div onclick="selectFruit('लीची',150)" class="fruit-btn">🍒 लीची</div>
+  </div>
+
+  <div id="orderForm" style="display:none; margin-top:24px;">
+    <div class="form-group"><strong>फल:</strong> <span id="fruitName"></span></div>
+    <div class="form-group"><input id="name" placeholder="आपका नाम"/></div>
+    <div class="form-group"><input id="phone" placeholder="मोबाइल नंबर"/></div>
+    <div class="form-group"><input id="address" placeholder="डिलीवरी पता"/></div>
+    <div class="form-group"><input id="qty" type="number" placeholder="किलो"/></div>
+    <button onclick="sendOrder()" class="order-btn">✅ WhatsApp पर ऑर्डर भेजें</button>
+  </div>
+
+  <script>
+    let currFruit = '', currRate = 0;
+    function selectFruit(name, rate) {
+      currFruit = name; currRate = rate;
+      document.getElementById('fruitName').innerText = name + ' (₹' + rate + '/kg)';
+      document.getElementById('orderForm').style.display = 'block';
+    }
+
+    function sendOrder() {
+      const n = document.getElementById('name').value.trim();
+      const p = document.getElementById('phone').value.trim();
+      const a = document.getElementById('address').value.trim();
+      const q = document.getElementById('qty').value.trim();
+      if (!n || !p || !a || !q) {
+        alert('सभी फील्ड भरें');
+        return;
+      }
+      const total = q * currRate;
+      const msg = `नाम: ${n}%0Aफ़ोन: ${p}%0Aपता: ${a}%0Aफल: ${currFruit}%0Aकिलो: ${q}%0Aकुल: ₹${total}%0A%0AUPI पे करें: upi://pay?pa=badanshul4-1@okaxis&pn=Rishabh%20Fruits&cu=INR%0Aऔर Payment के बाद स्क्रीनशॉट भेजें।`;
+      window.open(`https://wa.me/918435054028?text=${msg}`, '_blank');
+    }
+  </script>
+
+</body>
+</html>
