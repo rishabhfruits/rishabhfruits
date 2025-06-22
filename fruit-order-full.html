@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Rishabh Fruits - Order</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 p-4">
+  <div class="max-w-xl mx-auto bg-white shadow-md rounded-lg p-6">
+    <h1 class="text-2xl font-bold text-center mb-4">🍎 Rishabh Fruits Order</h1>
+
+    <div id="fruit-container"></div>
+
+    <button onclick="addFruitRow()" class="mt-4 bg-blue-500 text-white px-4 py-2 rounded">+ Add Fruit</button>
+
+    <div class="mt-6 p-4 bg-green-100 rounded">
+      <h2 class="text-lg font-bold">💳 UPI Payment</h2>
+      <p class="mb-2">ऑर्डर करने के बाद नीचे दिए गए लिंक से भुगतान करें:</p>
+      <a href="upi://pay?pa=badanshul4-1@okaxis&pn=Rishabh%20Fruits&cu=INR" target="_blank" class="text-blue-700 font-semibold">
+        👉 UPI से भुगतान करें
+      </a>
+      <p class="mt-1">🔁 भुगतान के बाद कृपया स्क्रीनशॉट WhatsApp पर भेजें।</p>
+    </div>
+
+    <button onclick="sendOrder()" class="mt-4 bg-green-600 text-white px-4 py-2 rounded w-full">📩 Send Order via WhatsApp</button>
+  </div>
+
+  <script>
+    let fruitIndex = 0;
+
+    function addFruitRow() {
+      const container = document.getElementById("fruit-container");
+      const div = document.createElement("div");
+      div.className = "grid grid-cols-3 gap-2 mb-2";
+      div.innerHTML = `
+        <input type="text" id="fruit-${fruitIndex}" placeholder="फल" class="p-2 border rounded">
+        <input type="number" id="qty-${fruitIndex}" placeholder="किलो" class="p-2 border rounded">
+        <input type="number" id="rate-${fruitIndex}" placeholder="रेट" class="p-2 border rounded">
+      `;
+      container.appendChild(div);
+      fruitIndex++;
+    }
+
+    function sendOrder() {
+      let message = "📦 Fruit Order%0A%0A";
+      let total = 0;
+
+      for (let i = 0; i < fruitIndex; i++) {
+        const fruit = document.getElementById(`fruit-${i}`);
+        const qty = document.getElementById(`qty-${i}`);
+        const rate = document.getElementById(`rate-${i}`);
+
+        if (fruit && qty && rate && fruit.value && qty.value && rate.value) {
+          const amount = qty.value * rate.value;
+          total += amount;
+          message += `${i + 1}. ${fruit.value} - ${qty.value}kg @ ₹${rate.value} = ₹${amount}%0A`;
+        }
+      }
+
+      message += `%0A💰 Total: ₹${total}%0APlease confirm payment via UPI & send screenshot.`;
+      const phone = "918435054028";
+      const waLink = `https://wa.me/${phone}?text=${message}`;
+      window.open(waLink, '_blank');
+    }
+
+    window.onload = addFruitRow;
+  </script>
+</body>
+</html>
