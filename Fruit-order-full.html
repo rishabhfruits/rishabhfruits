@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Order Fruits - Rishabh Fruits</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-yellow-50 text-gray-900">
+  <header class="bg-green-600 text-white p-4 text-center text-xl font-bold">
+    🛒 Rishabh Fruits Order Form
+  </header>
+
+  <main class="p-4 max-w-2xl mx-auto">
+    <div id="fruit-rows" class="space-y-4"></div>
+
+    <button onclick="addFruitRow()" class="mt-4 bg-yellow-500 text-white px-4 py-2 rounded">
+      ➕ एक और फल जोड़ें
+    </button>
+
+    <button onclick="sendOrder()" class="mt-4 bg-green-600 text-white px-6 py-2 rounded w-full">
+      ✅ WhatsApp पर ऑर्डर भेजें
+    </button>
+  </main>
+
+  <script>
+    let fruitIndex = 0;
+
+    function addFruitRow() {
+      const container = document.getElementById("fruit-rows");
+      const div = document.createElement("div");
+      div.className = "grid grid-cols-3 gap-2";
+      div.innerHTML = `
+        <input type="text" placeholder="फल" class="p-2 border rounded" id="fruit-${fruitIndex}" />
+        <input type="number" placeholder="किलो" class="p-2 border rounded" id="qty-${fruitIndex}" />
+        <input type="number" placeholder="रेट" class="p-2 border rounded" id="rate-${fruitIndex}" />
+      `;
+      container.appendChild(div);
+      fruitIndex++;
+    }
+
+    function sendOrder() {
+      let message = "📦 Fruit Order%0A%0A";
+      let total = 0;
+
+      for (let i = 0; i < fruitIndex; i++) {
+        const fruit = document.getElementById(`fruit-${i}`);
+        const qty = document.getElementById(`qty-${i}`);
+        const rate = document.getElementById(`rate-${i}`);
+        if (fruit && qty && rate && fruit.value && qty.value && rate.value) {
+          const amount = qty.value * rate.value;
+          total += amount;
+          message += `${i + 1}. ${fruit.value} - ${qty.value}kg × ₹${rate.value} = ₹${amount}%0A`;
+        }
+      }
+
+      message += `%0A💰 Total: ₹${total}%0A%0APlease confirm.`;
+
+      const phone = "918435054028";
+      const waLink = `https://wa.me/${phone}?text=${message}`;
+      window.open(waLink, '_blank');
+
+      setTimeout(() => {
+        window.location.href = `https://rishabhfruits.github.io/rishabhfruits/payment.html?amount=${total}`;
+      }, 1500);
+    }
+
+    window.onload = addFruitRow;
+  </script>
+</body>
+</html>
